@@ -3,7 +3,7 @@ import React from 'react';
 const Acceuil = () => {
     return (
         <div>
-            <p>Texte présentation entreprise</p>
+            <p></p>
         </div>
     );
 };

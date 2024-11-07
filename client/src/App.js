@@ -5,6 +5,8 @@ import Materiels from './components/materiels';
 import Devis from './components/devis';
 import Footer from './components/footer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles.css';
 
 const App = () => {
     return (
