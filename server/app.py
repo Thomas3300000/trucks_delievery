@@ -38,6 +38,7 @@ def send_email(to_email, subject, content):
     try:
         sg = SendGridAPIClient(SENDGRID_API_KEY)
         response = sg.send(message)
+        print(f"Email envoyé avec le statut : {response.status_code}")
         return response.status_code
     except Exception as e:
         print(f"Erreur lors de l'envoi de l'email : {e}")
@@ -69,61 +70,13 @@ def quote():
     cursor.close()
     connect.close()
 
-    entreprise_mail = entreprise_mail = f"""
-<html>
-<head>
-    <style>
-        body {{
-            font-family: Arial, sans-serif;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }}
-        .container {{
-            width: 80%;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            border: 3px solid #000;
-        }}
-        h3 {{
-            color: red;
-            font-size: 30px;
-            margin-bottom: 20px;
-            background-color: black;
-        }}
-        ul {{s
-            list-style: disc;
-            list-style-position: inside;
-            padding-left: 0;
-            text-align: left;
-        }}
-        li {{
-            padding: 8px 0;
-            font-size: 16px;
-        }}
-        .footer {{
-            margin-top: 20px;
-            text-align: left;
-            font-size: 18px;
-            color: red;
-            background-color: #000;
-            margin-bottom: 40px;
-        }}
-        .footer p {{
-            margin: 0;
-            
-        }}
-    </style>
-</head>
-<body>
-    <div class="container">
-            <h3>Nouvelle demande de devis</h3>
-            <ul>
+    # Création de l'e-mail pour l'entreprise avec style inline
+    entreprise_mail = f"""
+    <html>
+    <body style="font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <div style="width: 80%; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h3 style="color: white; font-size: 50px; text-align: center; background-color: black; padding: 10px;">Nouvelle demande de devis</h3>
+            <ul style="list-style-type: none; padding: 50px; color: #333; font-size: 20px;">
                 <li><strong>Nom :</strong> {nom}</li>
                 <li><strong>Email :</strong> {email}</li>
                 <li><strong>Téléphone :</strong> {telephone}</li>
@@ -133,97 +86,42 @@ def quote():
                 <li><strong>Adresse d'arrivée :</strong> {adresse_arrivee}</li>
             </ul>
         </div>
-</body>
-</html>
-"""
+    </body>
+    </html>
+    """
 
+    # Envoi de l'email à l'entreprise
     send_email(COMPANY_EMAIL, "Nouvelle demande de devis", entreprise_mail)
 
-    
-    client_content = client_content = f"""
-<html>
-<head>
-    <style>
-        body {{
-            font-family: Arial, sans-serif;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }}
-        .container {{
-            width: 80%;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-size: 20px;
-            text-align: center;
-        }}
-        .border {{
-            border: 3px solid #1d1c1c;
-            margin: 0;
-            padding: 20px;
-            margin-bottom: 0px;
-        }}
-        .border p {{
-            line-height: 1.2;
-            text-align: left;
-            padding-left: 280px;
-        }}
-        h3 {{
-            color: white;
-            font-size: 30px;
-            margin-bottom: 0;
-            background-color: #1d1c1c;
-        }}
-        ul {{
-            list-style: disc;
-            list-style-position: inside;
-            padding-left: 300px;
-        }}
-        li {{
-            padding: 8px 0;
-            font-size: 16px;
-            text-align: left;
-        }}
-       .footer {{
-            margin-top: 0;
-            text-align: center;
-            font-size: 20px;
-            color: white;
-            background-color: #1d1c1c;	
-            margin-bottom: 0;
-        }}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h3>Bonjour {nom}</h3>
-        <div class="border">
-            <p>Votre demande de devis a bien été envoyée.</p>
-            <p>Nous vous contacterons sous peu.</p>
-            <p>Voici un récapitulatif de votre demande :</p>
-            <ul>
-                <li><strong>Matière à transporter :</strong> {matiere}</li>
-                <li><strong>Poids :</strong> {poids} kg</li>
-                <li><strong>Adresse de départ :</strong> {adresse_depart}</li>
-                <li><strong>Adresse d'arrivée :</strong> {adresse_arrivee}</li>
-            </ul>
-            <p>Nous vous contacterons sous peu.</p>
-            <p>Merci de votre confiance !</p>
+    # Création de l'email de confirmation pour le client avec style inline
+    client_content = f"""
+    <html>
+    <body style="font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <div style="width: 80%; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+            <h3 style="color: white; background-color: #1d1c1c; padding: 10px; font-size: 50px;">Bonjour {nom}</h3>
+            <div style="border: 3px solid #1d1c1c; padding: 20px; font-size: 20px;">
+                <p>Votre demande de devis a bien été envoyée.</p>
+                <p>Voici un récapitulatif de votre demande :</p>
+                <ul style="list-style-type: circle; padding-left: 120px; text-align: left; font-size: 20px; margin: 50px">
+                    <li><strong>Matière à transporter :</strong> {matiere}</li>
+                    <li><strong>Poids :</strong> {poids} kg</li>
+                    <li><strong>Adresse de départ :</strong> {adresse_depart}</li>
+                    <li><strong>Adresse d'arrivée :</strong> {adresse_arrivee}</li>
+                </ul>
+                <p>Nous vous contacterons sous peu.</p>
+                <p>Merci de votre confiance !</p>
+            </div>
+            <div style="margin-left: auto; color: white; background-color: #1d1c1c; text-align: center; padding-right: 10px;">
+                <p>Transport Lamarque</p>
+                <p>01 23 45 67 89</p>
+                <p>123 Rue de la Logistique, Paris, France</p>
+            </div>
         </div>
-     <div class="footer">
-            <p>Transport Lamarque</p>
-            <p>01 23 45 67 89</p>
-            <p>123 Rue de la Logistique, Paris, France</p>
-        </div>
-    </div>
-</body>
-</html>
-"""
+    </body>
+    </html>
+    """
 
+    # Envoi de l'email au client
     send_email(email, "Confirmation de votre demande de devis avec l'entreprise Transport Lamarque", client_content)
     
     return jsonify({'message': 'Devis envoyé avec succès'})

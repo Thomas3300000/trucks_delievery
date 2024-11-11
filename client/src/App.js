@@ -4,6 +4,7 @@ import Acceuil from './components/acceuil';
 import Materiels from './components/materiels';
 import Devis from './components/devis';
 import Footer from './components/footer';
+import ScrollToTop from './components/scroll';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
@@ -11,6 +12,7 @@ import './styles.css';
 const App = () => {
     return (
         <BrowserRouter>
+            <ScrollToTop />
             <Navbar />
             <Routes>
                 <Route path="/" element={<Acceuil />} />

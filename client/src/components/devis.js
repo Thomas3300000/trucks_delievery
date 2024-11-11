@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const FormQuote = () => {
   const [dataQuote, setdataQuote] = useState({
@@ -20,7 +22,7 @@ const FormQuote = () => {
     try {
       const response = await axios.post('http://127.0.0.1:5000/quote', dataQuote);
       if (response.status === 200) {
-        alert('Devis soumis avec succès');
+        toast.success(`Devis soumis avec succès !`);
         setdataQuote({
           nom: '',
           telephone: '',
@@ -30,18 +32,27 @@ const FormQuote = () => {
           adresse_depart: '',
           adresse_arrivee: ''
         });
+      
       } else {
-        alert('Erreur lors de la soumission');
+        toast.error('Erreur lors de la soumission');
       }
     } catch (error) {
-      alert('Erreur lors de la soumission');
+      toast.error('Erreur lors de la soumission');
     }
   };
 
   return (
     <div className="container mt-5">
-      <form onSubmit={submitInput} className="form-quote p-4 shadow rounded">
-        <h1 className="text-center text-decoration-underline mb-4 fs-2">DEMANDE DE DEVIS</h1>
+      <ToastContainer 
+        position="top-center" 
+        autoClose={10000} 
+        hideProgressBar={false} 
+        closeOnClick 
+        pauseOnHover 
+        draggable 
+      />
+      <form onSubmit={submitInput} className="form-quote p-4">
+        <h1 className="text-center text-decoration-underline mb-5 fs-1.5">DEMANDE DE DEVIS</h1>
         <div className="mb-3">
           <label className="form-label">Nom/Prénom ou Entreprise:</label>
           <input
