@@ -1,5 +1,8 @@
 # Trucks-Delivery
 
+(https://github.com/Thomas3300000/trucks_delievery/blob/639f34b8ffffcdcadea2de9a40f4ce61efeff481/client/src/images/image-readme.png)
+
+
 Trucks-Delivery est une application web dédiée à une entreprise de transport poids-lourd, permettant aux clients de demander des devis pour la livraison de divers matériaux. Ce projet comprend une interface frontend où les utilisateurs soumettent leurs demandes, ainsi qu'un backend qui gère les données, les stocke dans une base de données MySQL et envoie les informations par e-mail via SendGrid.
 Dans ce projet, il n'y a pas pour le moment d'interface implementer pour que l'entreprise puisse géré ces demandes de devis.
 
