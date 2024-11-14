@@ -6,20 +6,25 @@ from dotenv import load_dotenv
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
+# Chargement des variables d'environnement depuis le fichier .env
 load_dotenv()
 
+# Initialisation de l'application Flask
 app = Flask(__name__)
 CORS(app)
 
+# Configuration de la connexion à la base de données MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = 'trucks_delievery'
 
+# Variables liées à l'envoi d'email via SendGrid
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 FROM_EMAIL = os.getenv('FROM_EMAIL')
 COMPANY_EMAIL = os.getenv('COMPANY_EMAIL')
 
+# Fonction pour établir la connexion à la base de données MySQL
 def db_connection():
     return mysql.connector.connect(
         host=app.config['MYSQL_HOST'],
@@ -28,6 +33,7 @@ def db_connection():
         database=app.config['MYSQL_DB']
     )
 
+# Fonction pour envoyer un email via SendGrid
 def send_email(to_email, subject, content):
     message = Mail(
         from_email=FROM_EMAIL,
@@ -43,12 +49,15 @@ def send_email(to_email, subject, content):
     except Exception as e:
         print(f"Erreur lors de l'envoi de l'email : {e}")
 
+# Route d'accueil de l'API
 @app.route('/')
 def index():
     return "Bienvenue sur l'API Trucks-Delivery!"
 
+# Route pour gérer la demande de devis
 @app.route('/quote', methods=['POST'])
 def quote():
+    # Récupération des données envoyées par le client (nom, email, etc...)
     data = request.json
     nom = data['nom']
     email = data['email']
@@ -58,6 +67,7 @@ def quote():
     adresse_depart = data['adresse_depart']
     adresse_arrivee = data['adresse_arrivee']
 
+    # Connexion à la base de données et insertion des données du devis
     connect = db_connection()
     cursor = connect.cursor()
 
@@ -70,7 +80,7 @@ def quote():
     cursor.close()
     connect.close()
 
-    # Création de l'e-mail pour l'entreprise avec style inline
+    # Création du contenu de l'email destiné à l'entreprise (contenant les détails du devis)
     entreprise_mail = f"""
     <html>
     <body style="font-family: Arial, sans-serif; background-color: #f4f4f4;">
@@ -90,10 +100,10 @@ def quote():
     </html>
     """
 
-    # Envoi de l'email à l'entreprise
+    # Envoi de l'email à l'entreprise avec la demande de devis
     send_email(COMPANY_EMAIL, "Nouvelle demande de devis", entreprise_mail)
 
-    # Création de l'email de confirmation pour le client avec style inline
+    # Création du contenu de l'email de confirmation destiné au client
     client_content = f"""
     <html>
     <body style="font-family: Arial, sans-serif; background-color: #f4f4f4;">
@@ -121,10 +131,11 @@ def quote():
     </html>
     """
 
-    # Envoi de l'email au client
+    # Envoi de l'email de confirmation au client
     send_email(email, "Confirmation de votre demande de devis avec l'entreprise Transport Lamarque", client_content)
-    
+  
     return jsonify({'message': 'Devis envoyé avec succès'})
+
 
 if __name__ == '__main__':
     app.run(debug=True)

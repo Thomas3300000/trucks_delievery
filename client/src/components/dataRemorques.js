@@ -2,6 +2,8 @@ import benne from "../images/benne.jpg"
 import portechar from "../images/portechar.jpg"
 import plateau from "../images/plateau.jpg"
 
+// Composant dataRemorques , qui contient les données des remorques
+
 const dataRemorques = [
     {
         id: "benne",

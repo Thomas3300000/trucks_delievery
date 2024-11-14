@@ -1,9 +1,13 @@
 import React from 'react';
 
+// Composant acceuil , qui affiche la page d'accueil avec texte de presentation de l'entreprise
+
 const Acceuil = () => {
     return (
         <div className="container acceuil-container">
             <div className="acceuil-content">
+
+                {/* Titre principal et paragraphe de la page d'accueil */}
                 <h1 className="text-center acceuil-title black-text-with-white-border">LE TRANSPORT, UNE PASSION.</h1>
                 <p className="acceuil-paragraph black-text-with-white-border">
                     <strong>Transport Lamarque</strong> est une entreprise familiale de transport spécialisée dans la livraison de marchandises en poids lourd. Depuis plusieurs années, nous mettons notre expertise et notre savoir-faire au service des entreprises et des particuliers, en proposant des solutions de transport fiables, efficaces et adaptées à tous types de besoins.
